@@ -1,4 +1,4 @@
-chrome extension to track screen time. inspired by apple's screen time system (and my youtube addiction (which has only been replaced with a https://developer.chrome.com/docs/extensions/reference/api/ addiction))
+chrome extension made with raw HTML/CSS/JS to track screen time. inspired by apple's screen time system (and my youtube addiction (which has only been replaced with a https://developer.chrome.com/docs/extensions/reference/api/ addiction))
 
 made entirely while studying cybersec and comp sci at Stevens IT over the summer
 

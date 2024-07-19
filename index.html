@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ScreenTime</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>ScreenTime</h1>
+    <p>Current Timezone: <span id="timezone"></span> </p> 
+    <div class="scroll"><div class="chart"><canvas id="stackedBarChart100%"></canvas></div></div>
+    <div class="scroll"><div class="chart"><canvas id="stackedBarChart">    </canvas></div></div>
+    <div class="scroll"><div class="chart"><canvas id="barChart">           </canvas></div></div>
+    
+    <table id="timeTable">
+        <thead>
+            <tr>
+                <th>Website</th>
+                <th>Time(s) Started</th>
+                <th>Time(s) Ended</th>
+                <th>Time(s) Elapsed</th>
+                <th>Total Time Elapsed</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr>
+                <td id="website"></td>
+                <td id="startTime"></td>
+                <td id="currentTime"></td>
+                <td id="elapsedTime"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- local copy of chart.js from chartjs.org -->
+    <script src="imported/chart.js"></script>
+
+    <script src="imported/md5.min.js"></script>
+
+    <script src="myCharts.js"></script>
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>

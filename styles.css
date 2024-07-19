@@ -1,0 +1,34 @@
+.chart {
+    width: 2000px;
+    height: 500px;
+}
+
+.scroll {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 600px;
+}
+
+#timeTable {
+    border: 1px solid;
+    border-collapse: collapse;
+    word-wrap: break-word;
+    max-width: 80%;
+}
+
+td {
+    border: 1px solid;
+    padding: 10px;
+}
+
+th {
+    border: 1px solid;
+    padding: 10px;
+    width: 80%;
+}
+
+body {
+    padding: 10px;
+    width: 600px;
+}
+

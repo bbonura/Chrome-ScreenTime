@@ -1,0 +1,28 @@
+{
+    "name": "ScreenTime",
+    "version": "1.0.0",
+    "description": "check your screentime on different websites",
+    "manifest_version": 3,
+    "author": "Mica (bbonura on GitHub)",
+    "action":{
+        "default_popup": "index.html",
+        "default_title": "ScreenTime"
+    },
+    "background":{
+        "service_worker": "background/service_worker.js"
+    },
+    "permissions": [
+        "storage",
+        "tabs",
+        "sessions",
+        "system.display",
+        "idle"
+    ],
+    "web_accessible_resources": [
+        {
+          "resources": ["_favicon/*"],
+          "matches": ["<all_urls>"],
+          "extension_ids": ["*"]
+        }
+    ]
+}

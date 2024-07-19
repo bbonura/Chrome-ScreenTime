@@ -46,26 +46,33 @@ function barStacked100(context, inputData) {
 
 
                 // TODO - remove
-                Object.keys(colorStore).forEach((key, index) => {
-                    console.log(`KEY: ${key}`)
-                    console.log(colorStore[key]);
-                });
+                // Object.keys(colorStore).forEach((key, index) => {
+                //     console.log(`KEY: ${key}`)
+                //     console.log(colorStore[key]);
+                // });
+                // console.log(colorStore);
 
-                let color;
-                try {
-                    color = colorStore[url];
-                    let _ = color[0];
-                    console.log(`worked for ${url}`);
-                } catch (e) {
-                    //console.log(e);
-                    console.log(`didn't work for ${url}`)
-                    color = md5.array(url + colorScheme).slice(0,3);
-                }
+
+
+                // let color;
+                // try {
+                //     color = colorStore[url];
+                //     console.log(color);
+                //     let _ = color[0];
+                //     console.log(`worked for ${url}`);
+                // } catch (e) {
+                //     //console.log(e);
+                //     console.log(color);
+                //     console.log(`didn't work for ${url}`)
+                //     color = md5.array(url + colorScheme).slice(0,3);
+                // }
                 
                 // console.log(url);
                 // console.log(colorStore);
                 // console.log(color);
                 // console.log(colorStore["https://github.com/"]);
+
+                let color = md5.array(url + colorScheme).slice(0,3);
 
                 dataset.backgroundColor[hourIndex] = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.5)`
                 myDatasets.push(dataset);
@@ -350,12 +357,12 @@ function calcTimesPerHour(inputData) {
 
 
 
-function createBarChart(type, context, inputData, colors) {
+function createBarChart(type, context, inputData/*, colors*/) {
 
-    console.log("INSIDE CReATE BAR CHART. PRINTING COLORS:")
-    console.log(colors);
+    // console.log("INSIDE CReATE BAR CHART. PRINTING COLORS:")
+    // console.log(colors);
 
-    colorStore = colors;
+    // colorStore = colors;
 
     console.log(`Creating ${type}`)
     switch (type) {

@@ -231,6 +231,8 @@ chrome.idle.setDetectionInterval(15);
 chrome.idle.onStateChanged.addListener( function (state) {
     console.log("---------------- IDLE STATE CHANGED HALLEUHUAH -----------")
 });
+
+
 // chrome.system.display.onDisplayChanged() - might be able to check when the laptop screen is off,
 //                                            and add an end_time then. Also need to check for on
 
@@ -243,11 +245,12 @@ chrome.idle.onStateChanged.addListener( function (state) {
 //        and make it the latest end_time for the last website
 // chrome.sessions has a "lastModified" property which is the time the browser was closed (in sec ab-epoch)
 // chrome.session.getRecentlyClosed() --> Session[] sessions
-// sessions[0].lastModified --> exactly the time I need
+// sessions[0].lastModified --> 1/1000 the time I need
 
 // note to self - i can get the favicon icon for the URLs which would be nice
-
 // or just do this http://www.google.com/s2/favicons?domain=www.domain.com
+// or i could just do NEITHER because the websites keep yelling at me
+// wait try with https hold on
 
 
 chrome.runtime.onInstalled.addListener(() => {

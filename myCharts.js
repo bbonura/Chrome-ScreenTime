@@ -1,5 +1,6 @@
 // import Chart from 'chart.js/auto';
 
+var colorStore;
 
 // I can change this variable to change all off my hash-derived colors :D
 var colorScheme = ""
@@ -40,8 +41,33 @@ function barStacked100(context, inputData) {
                 dataset.borderWidth = 0;
                 dataset.stack = 0;
                 dataset.backgroundColor = [];
-                let colors = md5.array(url + colorScheme).slice(0,3);
-                dataset.backgroundColor[hourIndex] = `rgba(${colors[0]}, ${colors[1]}, ${colors[2]}, 0.5)`
+                
+                //let color = md5.array(url + colorScheme).slice(0,3);
+
+
+                // TODO - remove
+                Object.keys(colorStore).forEach((key, index) => {
+                    console.log(`KEY: ${key}`)
+                    console.log(colorStore[key]);
+                });
+
+                let color;
+                try {
+                    color = colorStore[url];
+                    let _ = color[0];
+                    console.log(`worked for ${url}`);
+                } catch (e) {
+                    //console.log(e);
+                    console.log(`didn't work for ${url}`)
+                    color = md5.array(url + colorScheme).slice(0,3);
+                }
+                
+                // console.log(url);
+                // console.log(colorStore);
+                // console.log(color);
+                // console.log(colorStore["https://github.com/"]);
+
+                dataset.backgroundColor[hourIndex] = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.5)`
                 myDatasets.push(dataset);
 
             })
@@ -86,15 +112,6 @@ function barStacked100(context, inputData) {
         
                 // }
             }, 
-            // scales: {
-            //     y: {
-            //         ticks: {
-            //             callback: function(value) {
-            //                 return millisecondsToString(value);
-            //             }
-            //         }
-            //     }
-            // } 
             scales: {
                 x: {
                     stacked: true
@@ -116,14 +133,6 @@ function barStacked100(context, inputData) {
     };
 
     const chart1 = new Chart(context, config);
-
-
-    // let chartData = {
-    //     labels: , // local times
-    //     datasets: myDatasets,
-    // };
-
-
 
 }
 
@@ -177,7 +186,6 @@ function barNormal(context, inputData) {
     // console.log(sortedUrls);
     // console.log("sorted colors");
     // console.log(sortedColors);
-
 
     let chartData = {
         labels: sortedUrls,
@@ -342,9 +350,13 @@ function calcTimesPerHour(inputData) {
 
 
 
+function createBarChart(type, context, inputData, colors) {
 
-// data parameter?
-function createBarChart(type, context, inputData) {
+    console.log("INSIDE CReATE BAR CHART. PRINTING COLORS:")
+    console.log(colors);
+
+    colorStore = colors;
+
     console.log(`Creating ${type}`)
     switch (type) {
         case "stacked100":
@@ -361,9 +373,6 @@ function createBarChart(type, context, inputData) {
             return;
     }
 }
-
-
-
 
 
 

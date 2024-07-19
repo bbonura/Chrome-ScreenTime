@@ -1,3 +1,4 @@
+const colorThief = new ColorThief();
 
 // i don't think i should set the storage back at the end. might cause issues (prob not but who knows)
 // if i wanna edit options, prob just .set({"options": options_var})
@@ -66,19 +67,56 @@ async function createCharts() {
     console.log("Urls");
     console.log(urls);
 
-    createBarChart("stacked100", stacked100_context, urls);
-    createBarChart("stacked",    stacked_context,    urls);
-    createBarChart("normal",     normal_context,     urls);
+
+    // gives a color to each url based on its favicon. 
+    // if it fails to find a favicon, it defaults to first 3 bytes of the md5 hash of the array lol
+    let colors = {};
+    Object.keys(urls).forEach(async (url, index) => {
+        try {
+            //colors[url] = [];
+            colors[url] = await getFaviconColor(url);
+        } catch (e) {
+            console.log(e);
+            console.log(`SETTING URL ${url} TO MD5 FOR COLOR`)
+            colors[url] = md5.array(url).slice(0,3);
+        }
+    });
+
+    //make it wait for all the colors to be finished
+    // let still_empty = true;
+    // let iterations = 0;
+    // while (still_empty) {
+    //     still_empty = false;
+    //     Object.keys(colors).forEach((url, index) => {
+    //         console.log(colors[url].length);
+    //         if (colors[url].length != 3) {
+    //             still_empty = true;
+    //             console.log(colors[url].length);
+    //         }
+    //     });
+    //     if (iterations = 1000000000000) {
+    //         still_empty = false;
+    //     }
+    //     iterations += 1;
+    // }
+
+    console.log("-------------COLORS v1------------------")
+    console.log(colors);
+
+    createBarChart("stacked100", stacked100_context, urls, colors);
+    createBarChart("stacked",    stacked_context,    urls, colors);
+    createBarChart("normal",     normal_context,     urls, colors);
     
+    // console.log("-------------COLORS v2------------------")
+    // console.log(colors);
 
 }
 
-function faviconURL(u) {
-    const url = new URL(chrome.runtime.getURL("/_favicon/"));
-    url.searchParams.set("pageUrl", u);
-    url.searchParams.set("size", "32");
-    return url.toString();
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
+  
+
 
 function start() {
 
@@ -88,27 +126,40 @@ function start() {
     let timezone = t.join(" ")
     document.getElementById("timezone").innerHTML=timezone;
   
-    // let website = "https://connorcode.com/"
+    // let website = "https://www.apple.com/"
     // var img = new Image();
-    // img.src = "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + website + "&size=16";
+    // // img.src = "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + website + "&size=16";
     // //img.src = "http://www.google.com/s2/favicons?domain=" + website;
+    
+    // // this seems to work, but idk if the image is loading or if ColorThief is just messed up
+    // img.src = "http://favicon.yandex.net/favicon/" + website;
+    
+    // // img.src = "https://icons.duckduckgo.com/ip2/" + website;
+
+    // console.log(img);
+
     // img.crossOrigin = "Anonymous";
-    // //getColor(img.src);
+    // // //]getColor(img.src);
 
-    // const img = document.createElement('img');
-    // img.src = faviconURL("https://www.google.com") 
+    // // const img = document.createElement('img');
+    // // img.src = faviconURL("https://www.google.com") 
 
-    // const colorThief = new ColorThief();
-
+    // console.log(colorThief);
+    // let color;
     // if (img.complete) {
-    //     colorThief.getColor(img);
+    //     color = colorThief.getColor(img);
     // } else {
+    //     console.log(' it was not complete .. .. .. .')
     //     img.addEventListener('load', function() {
-    //         colorThief.getColor(img);
+    //         color = colorThief.getColor(img);
+    //         console.log(" this happened tho");
+    //         // make sure to put code in here to ensure that the img loaded.
     //     });
     // }
+    // console.log("--------Color--------");
+    // console.log(color);
     
-    //colorThief.getColor(img);
+    // //colorThief.getColor(img);
 
 }
 
@@ -148,19 +199,53 @@ function millisecondsToString(milli) {
     }
 }
 
+
+
+function getFaviconColor(url) {
+
+    console.log(`finding fav of ${url} `);
+
+    var img = new Image();
+
+    img.src = "http://favicon.yandex.net/favicon/" + url;
+
+    //console.log(img);
+
+    img.crossOrigin = "Anonymous";
+
+    let color;
+    if (img.complete) {
+        color = colorThief.getColor(img);
+        //colorCache[url] = color;
+        //console.log("returning color");
+        //console.log(color);
+        return color;
+    } else {
+        img.addEventListener('load', function() {
+            color = colorThief.getColor(img);
+            //colorCache[url] = color;
+            //console.log("returning color after wait");
+            //console.log(color);
+            return color;
+        });
+    }
+}
+
+
+
+
 start()
 fillTable();
 createCharts();
 
 
-// let startup;
-// const idk = chrome.storage.sync.get(["startupTime"]).then((result) => {
-//     startup = result.startupTime;
 
-//     start(startup);
-//     update(startup)
-//     setInterval(function() {update(startup)}, 1000);
-// });
+
+
+
+
+
+
 
 
 

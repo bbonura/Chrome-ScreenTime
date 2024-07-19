@@ -16,7 +16,8 @@
         "tabs",
         "sessions",
         "system.display",
-        "idle"
+        "idle", 
+        "favicon"
     ],
     "web_accessible_resources": [
         {

@@ -130,7 +130,7 @@ function tabChanged() {
 
 // function for adding an end time to the last website in the event where no new website is loaded
 // (ex. switching away from Google Chrome to a different app)
-async function addEndTime() {
+async function addEndTime(offset) {
     // unlikely that this is necessary but good to be cautious... i think
     await initStorageCache;
 
@@ -140,7 +140,7 @@ async function addEndTime() {
     let prev_website = urlStorageCache.last_website;
     urlStorageCache.last_website = "";
 
-    let time = Date.now()
+    let time = Date.now() - offset;
 
     urlStorageCache[prev_website]["end_times"] = urlStorageCache[prev_website]["end_times"] || [];
 
@@ -178,7 +178,7 @@ chrome.tabs.onActivated.addListener(() => {
 chrome.windows.onFocusChanged.addListener((result) => {
     if (result == chrome.windows.WINDOW_ID_NONE) {
         console.log("chrome unfocused")
-        addEndTime()
+        addEndTime(0)
     } else {
         console.log("chrome focused")
         tabChanged()
@@ -226,10 +226,21 @@ chrome.system.display.onDisplayChanged.addListener(() => {
 
 
 // copied from the internet
-chrome.idle.setDetectionInterval(15);
+// 70 minutes to 4200 seconds 
+// if you've been idle for 70 minutes, then 
+chrome.idle.setDetectionInterval(4200);
 
 chrome.idle.onStateChanged.addListener( function (state) {
-    console.log("---------------- IDLE STATE CHANGED HALLEUHUAH -----------")
+    console.log("---------------- IDLE STATE CHANGED HALLEUHUAH -----------");
+    console.log(state);
+    if (state == "idle") {
+        console.log("STATE IS IDLE, ADDING END TIME");
+        // this number should be the detection interval (basically adds time of last input, i hope)
+        addEndTime(4200 * 1000);
+    } else {
+        console.log("STATE IS ACTIVE, RUNNING TAB CHANGED");
+        tabChanged();
+    }
 });
 
 
@@ -268,6 +279,10 @@ chrome.runtime.onInstalled.addListener(() => {
     tabChanged();
 
 });
+
+
+setInterval( function() { console.log(chrome.system.display.getInfo()); 
+                          console.log((new Date).toLocaleTimeString()) }, 10000);
 
 
 // 60 lines of comments/unneeded whitespace. 164 lines of actual code and useful whitespace. That's a full powered beacon

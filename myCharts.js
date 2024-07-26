@@ -144,7 +144,27 @@ function barStacked100(context, inputData) {
 }
 
 function barStacked(context, inputData) {
-    //breakIntoHours();
+    console.log("CHART 2 TESTING")
+    let hours = breakIntoHours(inputData)
+    console.log(hours);
+
+    let totalTimesPerHour = [];
+
+    for (var hour in hours) {
+        console.log(hours[hour][ Object.keys(hours[hour])[0] ]);
+        let urlList = hours[hour][ Object.keys(hours[hour])[0] ]
+        let urls = {};
+        for (var index in urlList) {
+            console.log(index);
+            console.log(urlList[index]);
+            urls[Object.keys(urlList[index])[0]] = urlList[index][Object.keys(urlList[index])[0]];
+        } 
+        console.log(urls);
+
+        totalTimesPerHour.push( {hour: calcTotalTimes(urls)} );
+        
+    }
+    console.log(totalTimesPerHour);
     // calcTotalTimes();
     // or
     //calcTimesPerHour();
@@ -335,13 +355,19 @@ function calcTotalTimes(inputData) {
 
     // should probably check if its in the past day or not
     let totalTimes = {};
+    console.log("Input Data");
+    console.log(inputData);
 
     Object.keys(inputData).forEach((key) => {
         let time = 0;
+        
+        console.log (inputData[key]);
+
         inputData[key]["end_times"].forEach((end_time, index) => {
             time += end_time - inputData[key]["start_times"][index];
         });
         totalTimes[key] = time;
+
     });
 
     return totalTimes;

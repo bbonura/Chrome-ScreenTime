@@ -51,8 +51,10 @@ async function fillTable() {
     });
 }
 
+
 async function createCharts() {
     await initStorageCache;
+
 
     let stacked100_context = document.getElementById("stackedBarChart100%").getContext('2d'); 
     let stacked_context = document.getElementById("stackedBarChart").getContext('2d'); 
@@ -68,6 +70,7 @@ async function createCharts() {
 
     console.log("Urls");
     console.log(urls);
+    
 
     // var promises = [];
     // for (var url in urls) {

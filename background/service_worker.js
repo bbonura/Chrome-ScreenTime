@@ -1,13 +1,5 @@
-// HOLY friggin sheesh I SPENT LIKE A FULL DAY TRYING TO GET THIS TO WORK
-// ONLY TO REALIZE I USED A - INSTEAD OF A _ IN THE MANIFEST.JSON AAAAA
 
 console.log("SW LOADED")
-
-//importScripts("color-thief.umd.js")
-
-//var colorThief = new ColorThief();
-//var canvas = new OffscreenCanvas(64, 64);
-
 
 // get storage.sync  -  see data structure at EOF
 var urlStorageCache = {};
@@ -15,14 +7,10 @@ const initStorageCache = chrome.storage.sync.get().then((items) => {
     Object.assign(urlStorageCache, items); 
 });
 
-
 // logic for whether to add en end time, not to, remove the start time, or remove the object as a whole
 // w - website (string name)
 function endTimeLogic(w, time) {
     let start_times_length = urlStorageCache[w]["start_times"].length;
-
-    // TODO - remove
-    // console.log(`Time open: ${time - urlStorageCache[w]["start_times"][start_times_length - 1]}`)
 
     // check if end time was already added
     if ( start_times_length == urlStorageCache[w]["end_times"].length ) {
@@ -31,7 +19,7 @@ function endTimeLogic(w, time) {
     // check if tab was open for less than a second. remove that start time if so (basically ignore that whole session)
     } else if ( time - urlStorageCache[w]["start_times"][start_times_length - 1] < 1000) {
         
-        // if there was only one entry in start times, (which were gonna pop anyway), delete the url from storage
+        // if there was only one entry in start times, (which we're gonna pop anyway), delete the url from storage
         if (start_times_length == 1) {
             delete urlStorageCache[w];
             // need to also delete it in storage itself, cuz the write only writesitems in storage cache, 
@@ -64,7 +52,6 @@ function tabChanged() {
         } catch {
             console.log(`Invalid URL: ${tab.url}`)
         }
-        // console.log(`Website: ${website}`);
 
         await initStorageCache;
 
@@ -85,7 +72,6 @@ function tabChanged() {
         if (website == "chrome://newtab/") {
             urlStorageCache.last_website = "";
         } else {
-            console.log(urlStorageCache)
 
             // create website object if it does not exist
             urlStorageCache[website] = urlStorageCache[website] || {};
@@ -220,10 +206,6 @@ chrome.system.display.onDisplayChanged.addListener(() => {
     console.log(info);
 });
 
-// chrome.idle.onStateChanged.addListener(() => {
-//     console.log("---------------- IDLE STATE CHANGED HALLEUHUAH -----------")
-// })
-
 
 // copied from the internet
 // 70 minutes to 4200 seconds 
@@ -231,7 +213,7 @@ chrome.system.display.onDisplayChanged.addListener(() => {
 chrome.idle.setDetectionInterval(4200);
 
 chrome.idle.onStateChanged.addListener( function (state) {
-    console.log("---------------- IDLE STATE CHANGED HALLEUHUAH -----------");
+    console.log("----------- IDLE STATE CHANGED -----------");
     console.log(state);
     if (state == "idle") {
         console.log("STATE IS IDLE, ADDING END TIME");
@@ -281,8 +263,8 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 
-setInterval( function() { console.log(chrome.system.display.getInfo()); 
-                          console.log((new Date).toLocaleTimeString()) }, 10000);
+// setInterval( function() { console.log(chrome.system.display.getInfo()); 
+//                           console.log((new Date).toLocaleTimeString()) }, 10000);
 
 
 // 60 lines of comments/unneeded whitespace. 164 lines of actual code and useful whitespace. That's a full powered beacon

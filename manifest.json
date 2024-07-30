@@ -4,10 +4,12 @@
     "description": "check your screentime on different websites",
     "manifest_version": 3,
     "author": "Mica (bbonura on GitHub)",
+
     "action":{
-        "default_popup": "index.html",
+        "default_popup": "public/action.html",
         "default_title": "ScreenTime"
     },
+
     "background":{
         "service_worker": "background/service_worker.js"
     },

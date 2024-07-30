@@ -1,0 +1,45 @@
+#title_text {   
+    font-size: 4em;
+    font-family: "Urbanist", "Lucida Console", sans-serif;
+
+}
+
+#settings_button {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+}
+
+#charts_button {
+    background-color: #10c2b6;
+    border-color: #085e58;
+    border-radius: 10px;
+    
+    font-size: 2em;
+    font-family: "Urbanist", "Lucida Console", sans-serif;
+    font-weight: 700;
+
+
+    padding: 15px;
+
+}
+
+.chart {
+    margin: 20px;
+}
+
+body {
+    font-size: 62.5%;
+    background-color: #b3fcf7;
+    color: #06302e;
+}
+
+button {
+    cursor: pointer;
+}

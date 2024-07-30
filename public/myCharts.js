@@ -229,8 +229,8 @@ function barStacked(context, inputData) {
 
 }
 
-
-function barNormal(context, inputData) {
+                                    // here option works as max num bars to display and labelAxes
+function barNormal(context, inputData, {max, labelAxes} = {max: 0, labelAxes: true}) {
     let totalTimes = calcTotalTimes(inputData);
 
     /* SORT ALPHABETICALLY (could be useful later)
@@ -256,6 +256,14 @@ function barNormal(context, inputData) {
         sortedColors.push(`rgba(${colors[0]}, ${colors[1]}, ${colors[2]}, 0.5)`);
     }
 
+    if (max != 0) {
+        sortedTimes = sortedTimes.slice(0, max);
+        sortedUrls = sortedUrls.slice(0, max);
+        sortedColors = sortedColors.slice(0, max);        
+    }
+
+
+
     let chartData = {
         labels: sortedUrls,
         datasets: [{
@@ -278,7 +286,7 @@ function barNormal(context, inputData) {
                     //position: 'top',
                 },
                 title: {
-                    display: true,
+                    display: labelAxes,
                     text: 'Third Bar Chart'
                 },
                 tooltip: {
@@ -291,8 +299,14 @@ function barNormal(context, inputData) {
                 }
             }, 
             scales: {
+                x: {
+                    ticks: {
+                        display: labelAxes,
+                    }
+                },
                 y: {
                     ticks: {
+                        display: labelAxes,
                         callback: function(value) {
                             return millisecondsToString(value);
                         }
@@ -408,9 +422,9 @@ function calcTotalTimes(inputData) {
 
     return totalTimes;
 }
-
-
-function createBarChart(type, context, input) {
+ 
+                                            // can be max bars, etc. i guess. kinda dumb solution
+function createBarChart(type, context, input, option) {
     
     // make copy (cause there is no way to pass an obj by value (easily))
     let inputData = {};
@@ -434,7 +448,7 @@ function createBarChart(type, context, input) {
             barStacked(context, inputData);
             break;
         case "normal":
-            barNormal(context, inputData);
+            barNormal(context, inputData, option);
             break;
         default:
             console.log("Bar chart case not found.");

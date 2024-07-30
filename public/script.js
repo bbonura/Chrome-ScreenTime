@@ -107,12 +107,6 @@ async function createCharts() {
 
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-  
-
-
 function start() {
 
     let d = new Date();
